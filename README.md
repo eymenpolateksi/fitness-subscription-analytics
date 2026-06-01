@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+# Fitness Subscription Analytics Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A lightweight full-stack analytics dashboard built with React, Express.js, SQLite, and SQL.
 
-## Available Scripts
+The project simulates a subscription-based fitness platform and demonstrates how business metrics can be generated from a relational database, exposed through REST APIs, and visualized in a React dashboard.
 
-In the project directory, you can run:
+## Live Demo
 
-### `npm start`
+Deployment in progress.
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* SQLite relational database
+* SQL analytics queries
+* Express.js REST API
+* React analytics dashboard
+* Revenue tracking
+* Failed payment monitoring
+* Premium subscriber analysis
+* Churn risk detection
+* Business insights generation
+* Dynamic risk assessment
+* Top risk users table
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tech Stack
 
-### `npm run build`
+### Frontend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* React
+* JavaScript (ES6)
+* CSS
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Node.js
+* Express.js
 
-### `npm run eject`
+### Database
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* SQLite
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Dashboard Metrics
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The dashboard calculates and visualizes:
 
-## Learn More
+### Total Revenue
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Generated from successful payments.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Failed Payments
 
-### Code Splitting
+Tracks unsuccessful payment attempts.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Premium Subscribers
 
-### Analyzing the Bundle Size
+Counts active Premium plan users.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Churn Risk Users
 
-### Making a Progressive Web App
+Identifies users with multiple failed payment attempts.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Metrics
 
-### Deployment
+GET /api/metrics
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Returns:
 
-### `npm run build` fails to minify
+```json
+{
+  "totalRevenue": 149.97,
+  "failedPayments": 4,
+  "premiumSubscribers": 3,
+  "churnRiskUsers": 1
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Insights
+
+GET /api/insights
+
+Returns AI-style business insights generated from database metrics.
+
+### Risk Users
+
+GET /api/risk-users
+
+Returns users ranked by failed payment count.
+
+---
+
+## Project Architecture
+
+SQLite Database
+↓
+SQL Queries
+↓
+Express API
+↓
+React Dashboard
+
+---
+
+## Example Business Insights
+
+* Anna has 4 failed payments and should be flagged for follow-up.
+* Premium is the most common subscription plan in the sample data.
+* Successful payments generated 149.97 € in total revenue.
+
+---
+
+## Learning Goals
+
+This project was built to practice:
+
+* SQL querying
+* Relational database design
+* Backend API development
+* React state management
+* Data visualization
+* Full-stack application architecture
+
+---
+
+## Author
+
+Eymen Polat Ekşi
+
+Industrial Engineering Graduate | M.Sc. Computer Science Student at Humboldt University of Berlin
