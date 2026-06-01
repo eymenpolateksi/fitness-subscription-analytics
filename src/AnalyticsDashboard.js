@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts";
 
 export default function AnalyticsDashboard() {
   const [metrics, setMetrics] = useState(null);
   const [insights, setInsights] = useState([]);
+  const [subscriptionDistribution, setSubscriptionDistribution] = useState([]);
   const [riskUsers, setRiskUsers] = useState([]);
 
   useEffect(() => {
@@ -19,6 +32,10 @@ export default function AnalyticsDashboard() {
       fetch("http://localhost:5001/api/risk-users")
       .then((response) => response.json())
       .then((data) => setRiskUsers(data))
+      .catch((error) => console.error(error));
+      fetch("http://localhost:5001/api/subscription-distribution")
+      .then((response) => response.json())
+      .then((data) => setSubscriptionDistribution(data))
       .catch((error) => console.error(error));
   }, []);
 
@@ -68,6 +85,25 @@ const riskBackground =
     : riskLevel === "Medium Risk"
     ? "#fef3c7"
     : "#dcfce7";
+const riskScore = Math.min(100, metrics.failedPayments * 20);
+
+const riskScoreLabel =
+  riskScore >= 80
+    ? "Critical"
+    : riskScore >= 50
+    ? "Elevated"
+    : "Stable";
+const paymentStatusData = [
+  {
+    status: "Successful",
+    count: metrics.successfulPayments,
+  },
+  {
+    status: "Failed",
+    count: metrics.failedPayments,
+  },
+];
+const pieColors = ["#2563eb", "#f97316", "#22c55e"];
 
   return (
     <div
@@ -131,7 +167,97 @@ const riskBackground =
           padding: "24px",
         }}
       >
+      <div
+        style={{
+          marginTop: "36px",
+          backgroundColor: "white",
+          border: "1px solid #e2e8f0",
+          borderRadius: "14px",
+          padding: "24px",
+          maxWidth: "760px",   
+        }}
+      >
+        <h2>Dynamic Risk Score</h2>
+        <p style={{ color: "#64748b" }}>
+           Calculated from the number of failed payment events in the database.
+          </p>
+
+          <div
+            style={{
+              width: "100%",
+              height: "16px",
+              backgroundColor: "#e5e7eb",
+              borderRadius: "999px",
+              overflow: "hidden",
+              marginTop: "16px",
+            }}
+          >
+            <div
+              style={{
+                width: `${riskScore}%`,
+                height: "100%",
+                backgroundColor: riskColor,
+              }}
+            />
+          </div>
+
+          <p style={{ marginTop: "12px", fontWeight: "bold" }}>
+            {riskScore}/100 — {riskScoreLabel}
+          </p>
+        </div>
+
+       <div
+          style={{
+            marginTop: "36px",
+            backgroundColor: "white",
+            border: "1px solid #e2e8f0",
+            borderRadius: "14px",
+            padding: "24px",
+            maxWidth: "760px",
+          }}
+        >
         
+        <h2>Payment Status Overview</h2>
+
+          <ResponsiveContainer width="100%" height={260}>
+            <BarChart data={paymentStatusData}>
+              <XAxis dataKey="status" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="count" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div> 
+        <div
+          style={{
+            marginTop: "24px",
+            backgroundColor: "white",
+            border: "1px solid #e2e8f0",
+            borderRadius: "14px",
+            padding: "24px",
+            maxWidth: "760px",
+          }}
+        >
+          <h2>Subscription Plan Distribution</h2>
+
+          <ResponsiveContainer width="100%" height={280}>
+            <PieChart>
+              <Pie
+                data={subscriptionDistribution}
+                dataKey="subscriberCount"
+                nameKey="planName"
+                outerRadius={90}
+                label
+              >
+                {subscriptionDistribution.map((entry, index) => (
+                  <Cell key={entry.planName} fill={pieColors[index % pieColors.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
         <h2>Business Insights</h2>
         <p
           style={{

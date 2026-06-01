@@ -1,27 +1,20 @@
 # Fitness Subscription Analytics Dashboard
 
-A lightweight full-stack analytics dashboard built with React, Express.js, SQLite, and SQL.
+A full-stack analytics dashboard built with React, Express.js, SQLite, and SQL-based business metrics.
 
-The project simulates a subscription-based fitness platform and demonstrates how business metrics can be generated from a relational database, exposed through REST APIs, and visualized in a React dashboard.
+## Overview
 
-## Live Demo
+This project simulates a lightweight product analytics dashboard for a subscription-based fitness platform.
 
-Deployment in progress.
----
+The dashboard retrieves business metrics from a SQLite database through a custom Express API and visualizes them using React and Recharts.
 
-## Features
+The goal is to demonstrate:
 
-* SQLite relational database
-* SQL analytics queries
-* Express.js REST API
-* React analytics dashboard
-* Revenue tracking
-* Failed payment monitoring
-* Premium subscriber analysis
-* Churn risk detection
-* Business insights generation
-* Dynamic risk assessment
-* Top risk users table
+- SQL analytics queries
+- Backend API development
+- React dashboard design
+- Data visualization
+- Product analytics thinking
 
 ---
 
@@ -29,40 +22,92 @@ Deployment in progress.
 
 ### Frontend
 
-* React
-* JavaScript (ES6)
-* CSS
+- React
+- Recharts
+- JavaScript
 
 ### Backend
 
-* Node.js
-* Express.js
+- Node.js
+- Express.js
 
 ### Database
 
-* SQLite
+- SQLite
 
 ---
 
-## Dashboard Metrics
+## Features
 
-The dashboard calculates and visualizes:
+### KPI Dashboard
 
-### Total Revenue
+- Total Revenue
+- Failed Payments
+- Premium Subscribers
+- Churn Risk Users
 
-Generated from successful payments.
+### Business Insights
 
-### Failed Payments
+Insights generated directly from SQL queries:
 
-Tracks unsuccessful payment attempts.
+- User payment behavior
+- Subscription distribution
+- Revenue analysis
 
-### Premium Subscribers
+### Data Visualizations
 
-Counts active Premium plan users.
+#### Payment Status Overview
 
-### Churn Risk Users
+Bar chart comparing:
 
-Identifies users with multiple failed payment attempts.
+- Successful payments
+- Failed payments
+
+#### Subscription Plan Distribution
+
+Pie chart displaying:
+
+- Premium users
+- Basic users
+
+### Dynamic Risk Score
+
+Risk level is calculated automatically based on failed payment events:
+
+| Failed Payments | Risk Level |
+|---------------|-----------|
+| 0 - 1 | Low |
+| 2 - 3 | Medium |
+| 4 - 5 | High |
+| > 5 | Critical |
+
+### Top Risk Users
+
+Displays users with the highest number of failed payments.
+
+---
+
+## Project Structure
+
+```text
+fitness-subscription-analytics/
+│
+├── backend/
+│   ├── server.js
+│   ├── setup.sql
+│   ├── queries.sql
+│   └── fitness_platform.db
+│
+├── src/
+│   ├── AnalyticsDashboard.js
+│   ├── App.js
+│   └── ...
+│
+├── public/
+│
+├── package.json
+└── README.md
+```
 
 ---
 
@@ -70,63 +115,86 @@ Identifies users with multiple failed payment attempts.
 
 ### Metrics
 
+```http
 GET /api/metrics
+```
 
-Returns:
+Example Response:
 
 ```json
 {
   "totalRevenue": 149.97,
   "failedPayments": 4,
   "premiumSubscribers": 3,
-  "churnRiskUsers": 1
+  "churnRiskUsers": 1,
+  "successfulPayments": 3
 }
 ```
 
+---
+
 ### Insights
 
+```http
 GET /api/insights
+```
 
-Returns AI-style business insights generated from database metrics.
+Example Response:
 
-### Risk Users
-
-GET /api/risk-users
-
-Returns users ranked by failed payment count.
-
----
-
-## Project Architecture
-
-SQLite Database
-↓
-SQL Queries
-↓
-Express API
-↓
-React Dashboard
+```json
+[
+  "Anna has 4 failed payments and should be flagged for follow-up.",
+  "Premium is the most common subscription plan in the sample data.",
+  "Successful payments generated 149.97 € in total revenue."
+]
+```
 
 ---
 
-## Example Business Insights
+## Installation
 
-* Anna has 4 failed payments and should be flagged for follow-up.
-* Premium is the most common subscription plan in the sample data.
-* Successful payments generated 149.97 € in total revenue.
+### Backend
+
+```bash
+cd backend
+
+npm install
+
+node server.js
+```
+
+Backend runs on:
+
+```text
+http://localhost:5001
+```
+
+### Frontend
+
+```bash
+npm install
+
+npm start
+```
+
+Frontend runs on:
+
+```text
+http://localhost:3000
+```
 
 ---
 
-## Learning Goals
+## Learning Outcomes
 
-This project was built to practice:
+This project demonstrates:
 
-* SQL querying
-* Relational database design
-* Backend API development
-* React state management
-* Data visualization
-* Full-stack application architecture
+- SQL aggregation queries
+- Relational database design
+- REST API development
+- React state management
+- Data visualization with Recharts
+- Analytics dashboard design
 
 ---
 
@@ -134,4 +202,5 @@ This project was built to practice:
 
 Eymen Polat Ekşi
 
-Industrial Engineering Graduate | M.Sc. Computer Science Student at Humboldt University of Berlin
+M.Sc. Computer Science
+Humboldt-Universität zu Berlin

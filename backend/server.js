@@ -43,43 +43,48 @@ app.get("/api/metrics", (req, res) => {
     [],
     (err, row) => {
       if (err) return res.status(500).json({ error: err.message });
-
       metrics.totalRevenue = row.totalRevenue || 0;
 
       db.get(
-        "SELECT COUNT(*) AS failedPayments FROM payments WHERE status = 'failed'",
+        "SELECT COUNT(*) AS successfulPayments FROM payments WHERE status = 'success'",
         [],
         (err, row) => {
           if (err) return res.status(500).json({ error: err.message });
-
-          metrics.failedPayments = row.failedPayments;
+          metrics.successfulPayments = row.successfulPayments;
 
           db.get(
-            "SELECT COUNT(*) AS premiumSubscribers FROM subscriptions WHERE plan_name = 'Premium'",
+            "SELECT COUNT(*) AS failedPayments FROM payments WHERE status = 'failed'",
             [],
             (err, row) => {
               if (err) return res.status(500).json({ error: err.message });
-
-              metrics.premiumSubscribers = row.premiumSubscribers;
+              metrics.failedPayments = row.failedPayments;
 
               db.get(
-                `
-                SELECT COUNT(*) AS churnRiskUsers
-                FROM (
-                  SELECT user_id
-                  FROM payments
-                  WHERE status = 'failed'
-                  GROUP BY user_id
-                  HAVING COUNT(*) >= 2
-                )
-                `,
+                "SELECT COUNT(*) AS premiumSubscribers FROM subscriptions WHERE plan_name = 'Premium'",
                 [],
                 (err, row) => {
                   if (err) return res.status(500).json({ error: err.message });
+                  metrics.premiumSubscribers = row.premiumSubscribers;
 
-                  metrics.churnRiskUsers = row.churnRiskUsers;
+                  db.get(
+                    `
+                    SELECT COUNT(*) AS churnRiskUsers
+                    FROM (
+                      SELECT user_id
+                      FROM payments
+                      WHERE status = 'failed'
+                      GROUP BY user_id
+                      HAVING COUNT(*) >= 2
+                    )
+                    `,
+                    [],
+                    (err, row) => {
+                      if (err) return res.status(500).json({ error: err.message });
+                      metrics.churnRiskUsers = row.churnRiskUsers;
 
-                  res.json(metrics);
+                      res.json(metrics);
+                    }
+                  );
                 }
               );
             }
@@ -151,6 +156,27 @@ app.get("/api/insights", (req, res) => {
           );
         }
       );
+    }
+  );
+});
+
+app.get("/api/subscription-distribution", (req, res) => {
+  db.all(
+    `
+    SELECT
+      plan_name AS planName,
+      COUNT(*) AS subscriberCount
+    FROM subscriptions
+    GROUP BY plan_name
+    ORDER BY subscriberCount DESC
+    `,
+    [],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      res.json(rows);
     }
   );
 });
